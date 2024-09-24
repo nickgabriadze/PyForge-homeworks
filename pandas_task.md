@@ -13,8 +13,8 @@ Each well has a set of properties, which might vary according to experiments.
 It might be concentration, concentration_unit, type, channel, channel_order and any other properties (it's impossible to create 
 a full list of them, because new ones could be easily added). 1 property - 1 record in a wells table.
 
-In order to save some space, if all wells inside a plate have the same values, they are moved to plate level. 
-The same happens to plates - if all plates inside experiment have the same value, those properties moved from 
+In order to save some space, if all wells inside a plate have the same property_value for some property_name, they are moved to plate level, into property_value of plates table. 
+The same happens to plates - if all plates inside experiment have the same property_value for some property_name, those properties moved from 
 plate level to experiment level. 
 
 For one of our pipelines we need to get all properties for wells, including ones stored inside plates and experiments tables. 
