@@ -83,6 +83,23 @@ class SoundWaveFactory:
             'peak_to_peak_amplitude': peak_to_peak_amp
         })
 
+    def normalize_sound_waves(self, waves, amp=1.0):
+        min_length_wave = min(len(wave) for wave in waves)
+        normalized_waves = []
+
+        for wave in waves:
+            if len(wave) > min_length_wave:
+                wave = wave[:min_length]
+            else:
+                wave = np.pad(wave, (0, min_length_wave - len(wave)), 'constant')
+
+            max_amplitude = np.max(np.abs(wave))
+            if max_amplitude > 0:
+                wave = wave * (amp / max_amplitude)
+
+            normalized_waves.append(wave)
+
+        return normalized_waves
 
 if __name__ == '__main__':
     swf = SoundWaveFactory()
@@ -95,3 +112,6 @@ if __name__ == '__main__':
 
     waves_information = swf.get_waves_information(waves_data_a4)
     print(waves_information)
+
+    normalized = swf.normalize_sound_waves([waves_data_a4, waves_data_a1, waves_data_d7], 1.0)
+    print(normalized)
