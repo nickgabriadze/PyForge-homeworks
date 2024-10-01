@@ -93,9 +93,7 @@ class SoundWaveFactory:
             else:
                 wave = np.pad(wave, (0, min_length_wave - len(wave)), 'constant')
 
-            max_amplitude = np.max(np.abs(wave))
-            if max_amplitude > 0:
-                wave = wave * (amp / max_amplitude)
+            wave = wave * (amp / self._MAX_AMPLITUDE)
 
             normalized_waves.append(wave)
 
