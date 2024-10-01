@@ -101,6 +101,13 @@ class SoundWaveFactory:
 
         return normalized_waves
 
+    def save_wave(self, filename, file_type, wave_data):
+        if file_type.upper() == 'wav' or file_type.upper() == 'WAV':
+            wavfile.write(f"{filename}.wav", self._SAMPLING_RATE, wave_data.astype(np.int16))
+        else:
+            np.savetxt(f"{filename}.txt", wave_data)
+
+
 if __name__ == '__main__':
     swf = SoundWaveFactory()
     swf.create_note('a4')
@@ -115,3 +122,6 @@ if __name__ == '__main__':
 
     normalized = swf.normalize_sound_waves([waves_data_a4, waves_data_a1, waves_data_d7], 1.0)
     print(normalized)
+
+    swf.save_wave('my_wave_as_text_file', 'txt', waves_data_a4)
+    swf.save_wave('my_wave_as_text_file', 'vaw', waves_data_a4)
