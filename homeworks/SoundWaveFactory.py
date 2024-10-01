@@ -2,8 +2,6 @@ from scipy.io import wavfile
 import numpy as np
 
 
-
-
 class SoundWaveFactory:
     _SAMPLING_RATE = 44100
     _DURATION_SECONDS = 5
@@ -65,6 +63,26 @@ class SoundWaveFactory:
         except FileNotFoundError:
             print(f"{path} does not exist!")
 
+    def get_waves_information(self, waves_dataset):
+        sampling_rate = self._SAMPLING_RATE
+        wave_length = len(waves_dataset)
+        duration = wave_length / sampling_rate
+
+        min_amplitude = np.min(waves_dataset)
+        max_amplitude = np.max(waves_dataset)
+        mean_amplitude = np.mean(waves_dataset)
+        peak_to_peak_amp = max_amplitude - min_amplitude
+
+        return dict({
+            'sampling_rate': f"{sampling_rate / 1000} KHz",
+            'wave_length': wave_length,
+            'duration': duration,
+            'min_amplitude': min_amplitude,
+            'max_amplitude': max_amplitude,
+            'mean_amplitude': mean_amplitude,
+            'peak_to_peak_amplitude': peak_to_peak_amp
+        })
+
 
 if __name__ == '__main__':
     swf = SoundWaveFactory()
@@ -74,3 +92,6 @@ if __name__ == '__main__':
     waves_data_a4 = swf.read_waves('a4_sin.wav')
     waves_data_a1 = swf.read_waves('a4_sin.wav')
     waves_data_d7 = swf.read_waves('a4_sin.wav')
+
+    waves_information = swf.get_waves_information(waves_data_a4)
+    print(waves_information)
