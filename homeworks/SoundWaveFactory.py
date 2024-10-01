@@ -2,14 +2,12 @@ from scipy.io import wavfile
 import numpy as np
 
 
-def get_normed_sin(timeline, frequency):
-    return MAX_AMPLITUDE * np.sin(2 * np.pi * frequency * timeline)
 
 
 class SoundWaveFactory:
     _SAMPLING_RATE = 44100
     _DURATION_SECONDS = 5
-    _SOUND_ARRAY_LEN = SAMPLING_RATE * DURATION_SECONDS
+    _SOUND_ARRAY_LEN = _SAMPLING_RATE * _DURATION_SECONDS
     _MAX_AMPLITUDE = 2 ** 13
     _NOTES = {
         '0': 0, 'e0': 20.60172, 'f0': 21.82676, 'f#0': 23.12465, 'g0': 24.49971, 'g#0': 25.95654, 'a0': 27.50000,
@@ -38,17 +36,25 @@ class SoundWaveFactory:
         'b7': 3951.066, 'c7': 4186.009, 'c#7': 4434.922, 'd7': 4698.636, 'd#7': 4978.032,
     }
 
+    def get_normed_sin(self, timeline, frequency):
+        return self._MAX_AMPLITUDE * np.sin(2 * np.pi * frequency * timeline)
+
     def get_soundwave(self, timeline, note):
-        return get_normed_sin(timeline, self._NOTES[note])
+        return self.get_normed_sin(timeline, self._NOTES[note])
 
     def common_timeline(self):
         return np.linspace(0, self._DURATION_SECONDS, num=self._SOUND_ARRAY_LEN)
 
-    def create_note(self, note="a4", name=None, timeline: np.dtype["float64"] = self.common_timeline):
+    def create_note(self, note="a4", name=None, timeline=None):
+        if not timeline:
+            timeline = self.common_timeline()
+
         sound_wave = self.get_soundwave(timeline, note).astype(np.int16)
         if name is None:
             file_name = f"{note}_sin.wav".replace("#", "s")
         else:
             file_name = f"{name}.wav"
-        wavfile.write(file_name, SAMPLING_RATE, sound_wave)
+        wavfile.write(file_name, self._SAMPLING_RATE, sound_wave)
         return sound_wave
+
+
