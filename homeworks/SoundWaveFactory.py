@@ -57,4 +57,20 @@ class SoundWaveFactory:
         wavfile.write(file_name, self._SAMPLING_RATE, sound_wave)
         return sound_wave
 
+    def read_waves(self, path):
+        try:
+            waves = wavfile.read(path)
+            waves_data = waves[1]
+            return waves_data
+        except FileNotFoundError:
+            print(f"{path} does not exist!")
 
+
+if __name__ == '__main__':
+    swf = SoundWaveFactory()
+    swf.create_note('a4')
+    swf.create_note('a1')
+    swf.create_note('d7')
+    waves_data_a4 = swf.read_waves('a4_sin.wav')
+    waves_data_a1 = swf.read_waves('a4_sin.wav')
+    waves_data_d7 = swf.read_waves('a4_sin.wav')
