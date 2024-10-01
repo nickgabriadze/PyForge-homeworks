@@ -124,4 +124,4 @@ if __name__ == '__main__':
     print(normalized)
 
     swf.save_wave('my_wave_as_text_file', 'txt', waves_data_a4)
-    swf.save_wave('my_wave_as_text_file', 'vaw', waves_data_a4)
+    swf.save_wave('my_wave_as_wav_file', 'wav', waves_data_a4)
