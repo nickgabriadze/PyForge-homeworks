@@ -20,5 +20,6 @@ merged_wells_plates = wells_pivot.merge(plates_pivot, how='left', on='plate_id')
 
 final_df = merged_wells_plates.merge(experiments_pivot, how='left', on='experiment_id')
 
+final_df = final_df.fillna('None')
 
 print(final_df)
