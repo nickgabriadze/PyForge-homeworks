@@ -21,5 +21,6 @@ merged_wells_plates = wells_pivot.merge(plates_pivot, how='left', on='plate_id')
 final_df = merged_wells_plates.merge(experiments_pivot, how='left', on='experiment_id')
 
 final_df = final_df.fillna('None')
+final_df.to_excel('combined_data.xlsx', index=False)
 
 print(final_df)
